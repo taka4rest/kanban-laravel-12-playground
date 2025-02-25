@@ -1,0 +1,87 @@
+services:
+  apache:
+    build:
+      context: ./docker/apache
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    volumes:
+      - ./src:/var/www/html
+      - ./docker/apache/default.conf:/etc/apache2/sites-available/000-default.conf
+    depends_on:
+      - php
+      - mysql
+    networks:
+      - my_network
+
+  php:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    ports:
+    #   - "8000:80"
+      - "5173:5173"
+    volumes:
+      - ./src:/var/www/html
+      - ./docker-share/php/cache:/var/cache/php
+      - ./docker-share/php/log:/var/log
+    depends_on:
+      - mysql
+    # command: sh -c "npm install && npm run dev"
+    networks:
+      - my_network
+
+  mysql:
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: laravel
+      MYSQL_USER: laraveluser
+      MYSQL_PASSWORD: laravelpassword
+    volumes:
+      - ./docker-share/mysql:/var/lib/mysql
+      - ./docker-share/mysql-log:/var/log/mysql
+      - ./docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+    networks:
+      - my_network
+
+  # composer-laravel-install:
+  #   image: composer:latest
+  #   volumes:
+  #     - ./src:/app
+  #   working_dir: /app
+  #   # command: install
+  #   command: create-project laravel/laravel .
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "8088:80"
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: rootpassword
+    depends_on:
+      - mysql
+    networks:
+      - my_network
+
+  # assets:
+  #   image: node:20
+  #   working_dir: /var/www/html
+  #   volumes:
+  #     - ./:/var/www/html
+  #   ports:
+  #     - "3000:3000"
+  #   depends_on:
+  #     - php
+  #     - mysql
+  #   networks:
+  #     - my_network
+  #   command: sh -c "npm install && npm run dev"
+
+networks:
+  my_network:
+    driver: bridge

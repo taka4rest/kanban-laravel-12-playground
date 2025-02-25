@@ -1,0 +1,60 @@
+---
+description: This project is using Laravel 12 and PHP8.4, node.js 20. The project supports both English and Japanese in the existing codebase, with a preference for English in new code development.
+globs: 
+alwaysApply: false
+---
+# Project Rules
+
+1. **Directory Structure**
+   - The laravel root directory is `/src`.
+
+2. **Coding Style**
+   - Code should follow PSR-12 standards.
+   - Use 4 spaces for indentation.
+   - Variable names and function names should be in camelCase.
+
+3. **Comments**
+   - Comments in the code should be written as necessary.
+   - Do not remove existing comments.
+
+4. **Version Control**
+   - Use Git for version control.
+   - Clearly state important changes in commit messages.
+
+5. **Dependency Management**
+   - Use Composer to manage dependencies.
+   - When adding new packages, update `composer.json` and run `composer install`.
+
+6. **Database**
+   - Use migrations to manage the database schema.
+   - Use seeding to populate initial data.
+
+7. **Testing**
+   - Create unit tests and feature tests using PHPUnit.
+   - Place tests in the `tests` directory.
+
+8. **Environment Configuration**
+   - Manage environment variables in the `.env` file.
+   - Do not include the `.env` file in version control for security reasons.
+
+9. **Documentation**
+   - Document important information and usage in the `README.md`.
+
+10. **Code Review**
+    - Create pull requests and have them reviewed by other team members.
+
+11. **Middleware Configuration**
+    - Use middleware in the format that best suits the context
+    - Both array syntax `Route::middleware(['auth', 'admin'])` and chained calls `Route::middleware('auth')->middleware('admin')` are acceptable
+    - Always register middleware aliases in `$middlewareAliases` property of `Kernel.php`
+
+12. **Language Guidelines**
+    - For new code development:
+      - All user-facing text, comments, and variable names should be in English
+      - Date formats should follow US conventions (MM/DD/YYYY) or ISO standard (YYYY-MM-DD)
+    - For existing code:
+      - Existing Japanese text in views and comments can be maintained
+      - When modifying existing features, maintain consistency with the current language usage
+      - When adding new features to existing Japanese interfaces, Japanese text is acceptable
+
+Following these rules will help maintain the quality and consistency of the project.
